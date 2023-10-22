@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-
 func main() {
 	var userInput string
 	commands := getCommands()
