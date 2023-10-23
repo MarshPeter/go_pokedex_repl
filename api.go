@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -11,15 +10,16 @@ import (
 type locations struct {
 	Count    int    `json:"count"`
 	Next     string `json:"next"`
-	Previous any `json:"previous"`
+	Previous string `json:"previous"`
 	Results  []struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
 	} `json:"results"`
 }
 
-func getNextMapPage(offset int) {
-	res, err := http.Get("https://pokeapi.co/api/v2/location/")
+
+func getNextMapPage(link string) locations {
+	res, err := http.Get(link)
 
 	if err != nil {
 		log.Fatal(err)
@@ -42,7 +42,6 @@ func getNextMapPage(offset int) {
 	if err != nil {
 		log.Fatal(err)
 	} 
-	for _, value := range structuredResponse.Results {
-		fmt.Println(value.Name)
-	}
+
+	return structuredResponse
 }

@@ -57,7 +57,21 @@ func commandHelp() error {
 	return nil
 }
 
+var currentLocation locations
+
 func commandMap() error {
-	getNextMapPage(0)
+	if currentLocation.Next == "" {
+		currentLocation = getNextMapPage("https://pokeapi.co/api/v2/location/")
+	} else if (currentLocation.Next != "null") {
+		currentLocation = getNextMapPage(currentLocation.Next) 
+	} else {
+		fmt.Println("There are no more pages")
+		return nil
+	}
+
+	for _, value := range currentLocation.Results {
+		fmt.Println(value.Name)
+	} 
+
 	return nil
 }

@@ -10,8 +10,7 @@ func main() {
 
 	for {
 		fmt.Print("Pokedex > ")
-		fmt.Scanf("%s", &userInput)
-		fmt.Println(userInput)
+		fmt.Scan(&userInput)
 		fmt.Println()
 
 		val, ok := commands[userInput]
@@ -23,5 +22,6 @@ func main() {
 		}
 
 		val.callback()
+		fmt.Println()
 	}
 }
