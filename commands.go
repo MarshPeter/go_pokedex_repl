@@ -28,6 +28,11 @@ func getCommands() map[string]cliCommand {
 			description: "Get the next 20 locations",
 			callback: commandMap,
 		},
+		"mapb": {
+			name: "mapb",
+			description: "Get the previous 20 locations",
+			callback: commandMapB,
+		},
 	}
 
 	return commands
@@ -65,13 +70,28 @@ func commandMap() error {
 	} else if (currentLocation.Next != "null") {
 		currentLocation = getNextMapPage(currentLocation.Next) 
 	} else {
-		fmt.Println("There are no more pages")
+		fmt.Println("There are no more pages.")
 		return nil
 	}
 
 	for _, value := range currentLocation.Results {
 		fmt.Println(value.Name)
 	} 
+
+	return nil
+}
+
+func commandMapB() error {
+	if currentLocation.Previous == "" || currentLocation.Previous == "null" {
+		fmt.Println("You are already on the first page.")
+		return nil
+	}
+
+	currentLocation = getNextMapPage(currentLocation.Previous)
+
+	for _, value := range currentLocation.Results {
+		fmt.Println(value.Name)
+	}
 
 	return nil
 }
