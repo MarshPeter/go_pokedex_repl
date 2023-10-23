@@ -1,15 +1,25 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 )
 
+type locations struct {
+	Count    int    `json:"count"`
+	Next     string `json:"next"`
+	Previous any `json:"previous"`
+	Results  []struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"results"`
+}
+
 func getNextMapPage(offset int) {
-	link := fmt.Sprintf("http://pokeapi.co/api/v2/location/?offset=%v", offset)
-	res, err := http.Get(link)
+	res, err := http.Get("https://pokeapi.co/api/v2/location/")
 
 	if err != nil {
 		log.Fatal(err)
@@ -25,5 +35,14 @@ func getNextMapPage(offset int) {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%s", body)
+	structuredResponse := locations{}
+
+	err = json.Unmarshal([]byte(body), &structuredResponse)
+
+	if err != nil {
+		log.Fatal(err)
+	} 
+	for _, value := range structuredResponse.Results {
+		fmt.Println(value.Name)
+	}
 }

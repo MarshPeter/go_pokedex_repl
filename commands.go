@@ -58,6 +58,6 @@ func commandHelp() error {
 }
 
 func commandMap() error {
-	getNextMapPage(20)
+	getNextMapPage(0)
 	return nil
 }
